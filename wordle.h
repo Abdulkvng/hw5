@@ -1,8 +1,10 @@
 #ifndef WORDLE_H
 #define WORDLE_H
 
+#ifndef RECCHECK
 #include <string>
 #include <set>
+#endif
 
 /**
  * Generates all valid words based on the pattern, floating letters, and dictionary.
