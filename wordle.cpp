@@ -1,12 +1,11 @@
 #ifndef RECCHECK
-// For debugging
 #include <iostream>
-// For std::remove
 #include <algorithm> 
 #include <map>
 #include <set>
 #endif
 
+// maybe iostream cause for for loop count??
 #include "wordle.h"
 #include "dict-eng.h"
 using namespace std;
@@ -14,7 +13,6 @@ using namespace std;
 
 // gelper func
 void generateWords(std::string current, std::string floating, size_t index, const std::set<std::string>& dict, std::set<std::string>& results);
-
 //  wordle function
 std::set<std::string> wordle(
 const std::string& in,
@@ -25,32 +23,33 @@ const std::string& in,
 		return results; }
 
 // hleper functions
-void generateWords(std::string current, std::string floating, size_t index, const std::set<std::string>& dict, std::set<std::string>& results) {
-    if (index == current.size()) {
-        if (floating.empty() && dict.find(current) != dict.end()) {
- results.insert(current); }
-        return;}
-if (current[index] != '-') {
- generateWords(current, floating, index + 1, dict, results);
-   return;}
+void generateWords(std::string current, std::string floating, size_t index, const std::set<std::string>& dict, std::set<std::string>& results){
+	if(index == current.size()){
+		if(floating.empty() && dict.find(current)!= dict.end()){
+			results.insert(current);}
+		return;}
+	size_t blanks = 0; 
+	for(size_t i = index; i < current.size(); ++i){
+		if(current[i] == '-'){
+			++blanks;}}
 
-    // Try floating letters first
-    for (size_t i = 0; i < floating.size(); ++i) {
-     char c = floating[i];
-     std::string next = current;
-     next[index] = c;
-     std::string newFloating = floating;
-     newFloating.erase(i, 1);
-     generateWords(next, newFloating, index + 1, dict, results); }
+	if(floating.size() > blanks){
+		return; }
+		if(current[index] != '-'){
+		generateWords(current, floating, index + 1, dict, results);
+		return;}
+	for(char c = 'a'; c <= 'z'; ++c){
+std::string down = current; 
+	down[index] = c;
+				
+std::string updated = floating; 
+bool isFloating = false; 
 
-    // Try other letters only if theres room for remaining floating letters
-    size_t remainingBlanks = 0;
-    for (size_t i = index + 1; i < current.size(); ++i) {
- if (current[i] == '-') remainingBlanks++;}
+for(size_t i = 0; i < floating.size(); i++){
+if(floating[i] == c){
+updated = floating.substr(0,i) + floating.substr(i+1);
+	isFloating = true; 
+break;}			}
 
-    if (remainingBlanks >= floating.size()) {
-    for (char c = 'a'; c <= 'z'; ++c) {
-    if (floating.find(c) != std::string::npos) continue; // Skip floating letters (already tried)
- std::string next = current;
- next[index] = c;
-generateWords(next, floating, index + 1, dict, results); } }}
+			if(isFloating){generateWords(down, updated, index+1, dict, results);
+				} else{ generateWords(down, floating,index + 1, dict, results);}}}
