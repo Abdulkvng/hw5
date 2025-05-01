@@ -65,9 +65,10 @@ bool tryWorkerAssignment(
         shiftsCount[workerIndex]++;
 
         bool success = tryWorkerAssignment(avail, dailyNeed, maxShifts, sched,
-                          shiftsCount, currentDay, workerIndex, 
-            assignedCount + 1);
-        if (success) return true;
+        //     shiftsCount, currentDay, workerIndex, 
+ shiftsCount, currentDay, workerIndex, 
+  assignedCount + 1);
+if (success) return true;
         
         // Backtrack
     sched[currentDay].pop_back();
